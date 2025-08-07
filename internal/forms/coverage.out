@@ -1,0 +1,17 @@
+mode: set
+bookings-udemy/internal/forms/errors.go:6.44,8.2 1 1
+bookings-udemy/internal/forms/errors.go:11.42,13.18 2 1
+bookings-udemy/internal/forms/errors.go:13.18,15.3 1 1
+bookings-udemy/internal/forms/errors.go:17.2,17.14 1 1
+bookings-udemy/internal/forms/forms.go:17.33,22.2 1 1
+bookings-udemy/internal/forms/forms.go:24.43,25.31 1 1
+bookings-udemy/internal/forms/forms.go:25.31,27.37 2 1
+bookings-udemy/internal/forms/forms.go:27.37,29.4 1 1
+bookings-udemy/internal/forms/forms.go:34.39,39.13 2 1
+bookings-udemy/internal/forms/forms.go:39.13,42.3 2 1
+bookings-udemy/internal/forms/forms.go:44.2,44.13 1 1
+bookings-udemy/internal/forms/forms.go:48.52,50.21 2 1
+bookings-udemy/internal/forms/forms.go:50.21,52.3 1 1
+bookings-udemy/internal/forms/forms.go:55.38,56.40 1 1
+bookings-udemy/internal/forms/forms.go:56.40,58.3 1 1
+bookings-udemy/internal/forms/forms.go:61.29,63.2 1 1

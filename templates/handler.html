@@ -1,0 +1,24 @@
+document.getElementById("colorButton").addEventListener("click",function (){
+            let html = `
+            <form id="check-availability-form" action="" method="post" novalidate class="need-validation" style="min-height: 350px">
+               <div class="form-row">
+                   <div class="col">
+                       <div class="form-row" id="reservation-dates-modal">
+                           <div class="col">
+                               <input required class="form-control" type="text" name="start" id="start" placeholder="Arrival">
+                           </div>
+                           <div class="col">
+                               <input required class="form-control" type="text" name="end" id="end" placeholder="Departure">
+                           </div>
+                       </div>
+                   </div>
+               </div>
+            </form>
+        `
+            attention.custom({
+                msg: html,
+                title:"Choose your dates"
+            });
+            //notify("This is message ","success")
+            //notifyModal("title","<em>hello,world</em>","success","My text for button")
+        })

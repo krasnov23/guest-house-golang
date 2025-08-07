@@ -1,0 +1,134 @@
+{{template "base" .}}
+
+{{define "content"}}
+<div class="container">
+
+        <div class="row">
+            <div class="col">
+                <img src="/static/images/marjors-suite.png"
+                     class="img-fluid img-thumbnail mx-auto d-block room-image" alt="room image">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center mt-4">Major's Suite</h1>
+                <p>
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
+                    to remember.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col text-center">
+                <a id="check-availability-button" href="#" class="btn btn-success">Check Availability</a>
+            </div>
+        </div>
+    </div>
+{{end}}
+
+{{ define "js" }}
+    <script>
+        document.getElementById("check-availability-button").addEventListener("click",function (){
+            let html = `
+                    <form id="check-availability-form" action="" method="post" novalidate class="need-validation" style="min-height: 350px">
+                       <div class="form-row">
+                           <div class="col">
+                               <div class="form-row" id="reservation-dates-modal">
+                                   <div class="col">
+                                       <input required class="form-control" type="text" name="start" id="start" placeholder="Arrival">
+                                   </div>
+                                   <div class="col">
+                                       <input required class="form-control" type="text" name="end" id="end" placeholder="Departure">
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                    </form>
+                `
+            // Когда вы вызываете attention.custom, вы передаете объект с полями msg, title и callback:
+            // Здесь callback — это функция, которая будет вызвана после подтверждения пользователя.
+            // Внутри custom вы можете обращаться к c.callback, даже если он не был явно извлечен через деструктуризацию.
+            // переменная attention вызывается в шаблоне base
+            attention.custom({
+                msg: html,
+                title:"Choose your dates",
+                didOpen : () => {
+                    const startElem = document.getElementById("start");
+                    const start = new Datepicker(startElem, {
+                        format: 'yyyy-mm-dd',
+                        minDate: new Date()
+                    });
+
+                    startElem.addEventListener("click", function () {
+                        start.show();
+                    });
+
+                    const endElem = document.getElementById("end");
+                    const end = new Datepicker(endElem, {
+                        format: 'yyyy-mm-dd',
+                        minDate: new Date()
+                    });
+
+                    endElem.addEventListener("click", function () {
+                        end.show();
+                    });
+
+                },
+                // После того как пользователь нажимает "OK", вызывается функция callback, переданная в custom.
+                // Внутри custom, если пользователь подтвердил выбор, вызывается callback(result), где result — это значения полей start и end.
+                callback: function(result) {
+                    console.log("called");
+
+                    // Получаем форму по id
+                    let form = document.getElementById("check-availability-form");
+                    let formData = new FormData(form);
+                    formData.append("csrf_token","{{.CSRFToken}}");
+                    formData.append("room_id","2")
+
+                    // выполняется запрос на бекенд (fetch('/search-availability-json')). Ответ от бекенда обрабатывается, и данные выводятся в консоль.
+                    fetch('/search-availability-json',{
+                        method: "post",
+                        body: formData,
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.ok) {
+                                attention.custom({
+                                    icon: 'success',
+                                    msg: '<p>Room is available</p>'
+                                        + '<p><a href="/book-room?id='
+                                        + data.room_id
+                                        + '&s='
+                                        + data.start_date
+                                        + '&e='
+                                        + data.end_date
+                                        + '" class="btn btn-primary">'
+                                        + 'Book now!</a></p>',
+                                    showConfirmButton: false
+                                })
+                            } else {
+                                attention.error({
+                                    msg: "No availability"
+                                })
+                            }
+                        })
+                }
+            });
+            //notify("This is message ","success")
+            //notifyModal("title","<em>hello,world</em>","success","My text for button")
+        })
+    </script>
+{{ end }}

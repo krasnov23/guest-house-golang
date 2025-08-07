@@ -1,0 +1,2 @@
+soda migrate - применить миграции
+soda migrate down - применить миграции которые указаны в table_down
