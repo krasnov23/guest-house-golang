@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bookings-udemy/internal/helpers"
 	"github.com/justinas/nosurf"
+	"github.com/krasnov23/guest-house-golang/internal/helpers"
 	"log"
 	"net/http"
 )

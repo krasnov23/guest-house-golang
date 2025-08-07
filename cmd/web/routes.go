@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bookings-udemy/internal/config"
-	"bookings-udemy/internal/handlers"
 	"github.com/bmizerany/pat"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/krasnov23/guest-house-golang/internal/config"
+	"github.com/krasnov23/guest-house-golang/internal/handlers"
 	"net/http"
 )
 

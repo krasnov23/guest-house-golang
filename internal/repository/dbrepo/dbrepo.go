@@ -1,9 +1,9 @@
 package dbrepo
 
 import (
-	"bookings-udemy/internal/config"
-	"bookings-udemy/internal/repository"
 	"database/sql"
+	"github.com/krasnov23/guest-house-golang/internal/config"
+	"github.com/krasnov23/guest-house-golang/internal/repository"
 )
 
 type postgresDBRepo struct {

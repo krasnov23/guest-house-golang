@@ -1,6 +1,6 @@
 package models
 
-import "bookings-udemy/internal/forms"
+import "github.com/krasnov23/guest-house-golang/internal/forms"
 
 // Данные которые мы будет отправлять из handlers в наши шаблоны
 type TemplateData struct {

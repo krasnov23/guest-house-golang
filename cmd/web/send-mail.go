@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bookings-udemy/internal/models"
 	"fmt"
+	"github.com/krasnov23/guest-house-golang/internal/models"
 	mail "github.com/xhit/go-simple-mail/v2"
 	"log"
 	"os"

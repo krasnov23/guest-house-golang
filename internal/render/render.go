@@ -1,12 +1,12 @@
 package render
 
 import (
-	"bookings-udemy/internal/config"
-	"bookings-udemy/internal/models"
 	"bytes"
 	"errors"
 	"fmt"
 	"github.com/justinas/nosurf"
+	"github.com/krasnov23/guest-house-golang/internal/config"
+	"github.com/krasnov23/guest-house-golang/internal/models"
 	"html/template"
 	"net/http"
 	"path/filepath"

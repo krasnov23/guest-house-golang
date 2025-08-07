@@ -1,10 +1,10 @@
 package render
 
 import (
-	"bookings-udemy/internal/config"
-	"bookings-udemy/internal/models"
 	"encoding/gob"
 	"github.com/alexedwards/scs/v2"
+	"github.com/krasnov23/guest-house-golang/internal/config"
+	"github.com/krasnov23/guest-house-golang/internal/models"
 	"log"
 	"net/http"
 	"os"

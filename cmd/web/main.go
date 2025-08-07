@@ -1,15 +1,15 @@
 package main
 
 import (
-	"bookings-udemy/internal/config"
-	"bookings-udemy/internal/driver"
-	"bookings-udemy/internal/handlers"
-	"bookings-udemy/internal/helpers"
-	"bookings-udemy/internal/models"
-	"bookings-udemy/internal/render"
 	"encoding/gob"
 	"fmt"
 	"github.com/alexedwards/scs/v2"
+	"github.com/krasnov23/guest-house-golang/internal/config"
+	"github.com/krasnov23/guest-house-golang/internal/driver"
+	"github.com/krasnov23/guest-house-golang/internal/handlers"
+	"github.com/krasnov23/guest-house-golang/internal/helpers"
+	"github.com/krasnov23/guest-house-golang/internal/models"
+	"github.com/krasnov23/guest-house-golang/internal/render"
 	"log"
 	"net/http"
 	"os"

@@ -1,13 +1,13 @@
 mode: set
-bookings-udemy/cmd/web/main.go:23.13,27.16 2 0
-bookings-udemy/cmd/web/main.go:27.16,29.3 1 0
-bookings-udemy/cmd/web/main.go:31.2,37.16 3 0
-bookings-udemy/cmd/web/main.go:40.18,58.16 10 1
-bookings-udemy/cmd/web/main.go:58.16,61.3 2 0
-bookings-udemy/cmd/web/main.go:64.2,75.12 7 1
-bookings-udemy/cmd/web/middleware.go:10.53,11.71 1 1
-bookings-udemy/cmd/web/middleware.go:11.71,14.3 2 0
-bookings-udemy/cmd/web/middleware.go:18.45,38.2 3 1
-bookings-udemy/cmd/web/middleware.go:47.50,53.2 1 1
-bookings-udemy/cmd/web/routes.go:13.52,20.2 4 0
-bookings-udemy/cmd/web/routes.go:23.49,59.2 20 1
+github.com/krasnov23/guest-house-golang/cmd/web/main.go:23.13,27.16 2 0
+github.com/krasnov23/guest-house-golang/cmd/web/main.go:27.16,29.3 1 0
+github.com/krasnov23/guest-house-golang/cmd/web/main.go:31.2,37.16 3 0
+github.com/krasnov23/guest-house-golang/cmd/web/main.go:40.18,58.16 10 1
+github.com/krasnov23/guest-house-golang/cmd/web/main.go:58.16,61.3 2 0
+github.com/krasnov23/guest-house-golang/cmd/web/main.go:64.2,75.12 7 1
+github.com/krasnov23/guest-house-golang/cmd/web/middleware.go:10.53,11.71 1 1
+github.com/krasnov23/guest-house-golang/cmd/web/middleware.go:11.71,14.3 2 0
+github.com/krasnov23/guest-house-golang/cmd/web/middleware.go:18.45,38.2 3 1
+github.com/krasnov23/guest-house-golang/cmd/web/middleware.go:47.50,53.2 1 1
+github.com/krasnov23/guest-house-golang/cmd/web/routes.go:13.52,20.2 4 0
+github.com/krasnov23/guest-house-golang/cmd/web/routes.go:23.49,59.2 20 1

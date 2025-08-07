@@ -1,15 +1,15 @@
 package handlers
 
 import (
-	"bookings-udemy/internal/config"
-	"bookings-udemy/internal/models"
-	"bookings-udemy/internal/render"
 	"encoding/gob"
 	"fmt"
 	"github.com/alexedwards/scs/v2"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/justinas/nosurf"
+	"github.com/krasnov23/guest-house-golang/internal/config"
+	"github.com/krasnov23/guest-house-golang/internal/models"
+	"github.com/krasnov23/guest-house-golang/internal/render"
 	"html/template"
 	"log"
 	"net/http"

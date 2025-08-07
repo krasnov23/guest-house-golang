@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	"bookings-udemy/internal/models"
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/go-chi/chi"
 	_ "github.com/justinas/nosurf"
+	"github.com/krasnov23/guest-house-golang/internal/models"
 	"log"
 	"net/http"
 	"net/http/httptest"

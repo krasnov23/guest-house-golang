@@ -1,8 +1,8 @@
 package dbrepo
 
 import (
-	"bookings-udemy/internal/models"
 	"errors"
+	"github.com/krasnov23/guest-house-golang/internal/models"
 	"time"
 )
 

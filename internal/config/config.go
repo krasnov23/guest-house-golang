@@ -1,8 +1,8 @@
 package config
 
 import (
-	"bookings-udemy/internal/models"
 	"github.com/alexedwards/scs/v2"
+	"github.com/krasnov23/guest-house-golang/internal/models"
 	"html/template"
 	"log"
 )

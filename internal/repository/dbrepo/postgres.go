@@ -1,9 +1,9 @@
 package dbrepo
 
 import (
-	"bookings-udemy/internal/models"
 	"context"
 	"errors"
+	"github.com/krasnov23/guest-house-golang/internal/models"
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"time"

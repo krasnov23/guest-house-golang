@@ -1,9 +1,9 @@
 package main
 
 import (
-	"bookings-udemy/internal/config"
 	"fmt"
 	"github.com/go-chi/chi"
+	"github.com/krasnov23/guest-house-golang/internal/config"
 	"testing"
 )
 

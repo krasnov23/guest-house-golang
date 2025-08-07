@@ -1,8 +1,8 @@
 package helpers
 
 import (
-	"bookings-udemy/internal/config"
 	"fmt"
+	"github.com/krasnov23/guest-house-golang/internal/config"
 	"net/http"
 	"runtime/debug"
 )

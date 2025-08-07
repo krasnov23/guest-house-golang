@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"bookings-udemy/internal/models"
+	"github.com/krasnov23/guest-house-golang/internal/models"
 	"time"
 )
 

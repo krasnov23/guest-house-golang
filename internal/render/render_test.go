@@ -1,8 +1,8 @@
 package render
 
 import (
-	"bookings-udemy/internal/models"
 	"fmt"
+	"github.com/krasnov23/guest-house-golang/internal/models"
 	"net/http"
 	"net/http/httptest"
 	"testing"
