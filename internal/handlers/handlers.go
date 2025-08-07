@@ -26,6 +26,7 @@ type Repository struct {
 	DB  repository.DatabaseRepo
 }
 
+// L
 func NewRepo(app *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: app,
