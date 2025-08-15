@@ -79,6 +79,7 @@ func run() (*driver.DB, error) {
 	app.ErrorLog = errLog
 
 	session = scs.New()
+	// 24 часа срок жизни сессии
 	session.Lifetime = 24 * time.Hour
 	// Если Persist = true, кука будет постоянной (persistent cookie), и сессия сохранится даже после закрытия браузера.
 	session.Cookie.Persist = true

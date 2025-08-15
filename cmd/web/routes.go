@@ -46,18 +46,19 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/user/logout", handlers.Repo.Logout)
 	mux.Get("/contact", handlers.Repo.Contact)
 
-	// http.Dir("./static/"): Это функция, которая создаёт файловую систему, указывая на папку ./static/ в вашем проекте.
-	// Она позволяет Go получить доступ к файлам в этой папке (например, изображениям, CSS, JavaScript).
-	// http.FileServer: Это функция, которая создаёт HTTP-обработчик для обслуживания статических
-	// файлов из указанной файловой системы. В данном случае она будет обслуживать файлы из папки ./static/.
+	// Это HTTP-обработчик, который обслуживает статические файлы из указанной директории.
+	// http.Dir("./static/") указывает на папку с файлами.
+	// http.FileServer() создаёт обработчик, который умеет отдавать эти файлы по HTTP.
 	fileServer := http.FileServer(http.Dir("./static/"))
-	// mux.Handle: Это метод, который регистрирует обработчик для определённого маршрута.
-	// В данном случае он регистрирует обработчик для всех запросов, начинающихся с /static/.
-	// static/*: Это шаблон маршрута, который соответствует всем URL-адресам, начинающимся с /static/.
-	// Например: static/css/style.css, static/images/logo.png
-	// http.StripPrefix("/static", fileServer): Это функция, которая удаляет префикс /static из URL-адреса перед передачей запроса в fileServer
-	// Например: Если запрошен URL /static/css/style.css, то после удаления префикса fileServer будет искать файл css/style.css в папке ./static/.
+	// Метод маршрутизатора (в данном случае chi), который регистрирует обработчик для определённого URL-пути.
+	// Регистрирует обработчик fileServer для всех путей, начинающихся с /static/.
+	// http.StripPrefix("/static", ...) удаляет /static из URL перед передачей в fileServer
 	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
+
+	// Запрос приходит на /static/css/style.css.
+	// mux.Handle срабатывает на /static/* и передаёт запрос в http.StripPrefix.
+	// http.StripPrefix удаляет /static, оставляя css/style.css.
+	// fileServer ищет css/style.css в ./static/ и отдаёт файл.
 
 	mux.Route("/admin", func(mux chi.Router) {
 		//mux.Use(Auth)

@@ -94,12 +94,15 @@ func Template(w http.ResponseWriter, r *http.Request, tmpl string, td *models.Te
 		return errors.New("could not find template: " + tmpl)
 	}
 
+	//  Рендеринг сначала выполняется в буфер, чтобы:
+	// Проверить на ошибки до отправки клиенту.
+	// Избежать частичной записи в ResponseWriter при ошибках.
 	buf := new(bytes.Buffer)
 
 	td = AddDefaultData(td, r)
 
-	// Сначала шаблон выполняется и записывается в буфер (buf).
-	// Если шаблон содержит ошибки, они будут обнаружены на этом этапе, и вы сможете обработать их до отправки данных клиенту.
+	// Применяет шаблон t к данным td.
+	// Результат (HTML) записывается в buf
 	_ = t.Execute(buf, td)
 
 	// Если шаблон выполнен успешно, данные из буфера отправляются клиенту с помощью buf.WriteTo(w)
@@ -116,26 +119,34 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 
 	myCache := map[string]*template.Template{}
 
+	// Поиск всех шаблонов с расширением *.page.tmpl
 	pages, err := filepath.Glob(fmt.Sprintf("%s/*.page.tmpl", pathToTemplates))
+
 	if err != nil {
 		return myCache, err
 	}
 
 	for _, page := range pages {
+
+		// filepath.Base извлекает имя файла из пути (например, "/templates/home.page.tmpl" → "home.page.tmpl").
 		name := filepath.Base(page)
 
-		// ParseFiles(page) Парсит файл шаблона, указанный в page, и добавляет его содержимое в шаблон.
-		// Возвращает: Указатель на шаблон (*template.Template) и ошибку (error), если парсинг не удался.
+		// template.New(name) — создает новый шаблон с именем name.
+		// добавляет пользовательские функции (например, для форматирования дат), если они определены в functions.
+		//  парсит содержимое файла page и привязывает его к шаблону.
 		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 		if err != nil {
 			return myCache, err
 		}
 
+		// Поиск файлов макетов (.layout.tmpl)
 		matches, err := filepath.Glob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 		if err != nil {
 			return myCache, err
 		}
 
+		// Если найдены файлы макетов (len(matches) > 0), они парсятся и добавляются к основному шаблону.
+		// Например, home.page.tmpl может наследовать от base.layout.tmpl.
 		if len(matches) > 0 {
 			ts, err = ts.ParseGlob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 			if err != nil {
@@ -143,6 +154,7 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 			}
 		}
 
+		// Сохранение шаблона в кэш
 		myCache[name] = ts
 	}
 

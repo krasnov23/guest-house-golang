@@ -1,6 +1,7 @@
 function Prompt(){
     let toast = function(c) {
 
+        // переменные находящиеся внутри объекта "c" который будут переопределенны в случае если у нас они в этом объекте не указанны
         const {
             msg = "",
             icon = "success",
@@ -66,6 +67,7 @@ function Prompt(){
 
         // Извлекает значение свойства value из объекта, возвращенного Swal.fire, и присваивает его переменной formValues.
         // await Ожидает, пока пользователь закроет модальное окно SweetAlert2. Возвращает объект, содержащий результат взаимодействия пользователя.
+        // Функция ждёт, пока пользователь закроет модальное окно (await Swal.fire()), не блокируя основной поток.
         const { value: result } = await Swal.fire({
             icon: icon,
             title: title,
@@ -76,6 +78,7 @@ function Prompt(){
             focusConfirm: false,
             showCancelButton: true,
             showConfirmButton: showConfirmButton,
+            // Если в объекте c был передан кастомный didOpen, он выполнится. Если нет — ничего не произойдет.
             didOpen: () => {
                 if (c.didOpen !== undefined){
                     c.didOpen()
