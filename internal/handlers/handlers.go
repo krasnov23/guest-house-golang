@@ -98,6 +98,7 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 
 	if !ok {
+		// Ошибка достается и прокидывается в шаблон в функции AddDefaultData
 		m.App.Session.Put(r.Context(), "error", "cannot get reservation from session")
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
@@ -181,21 +182,6 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
-
-	/*reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
-
-	if !ok {
-		helpers.ServerError(w, errors.New("cannot get reservation from session"))
-		return
-	}*/
-
-	/*reservation.FirstName = r.Form.Get("first_name")
-	reservation.LastName = r.Form.Get("last_name")
-	reservation.Phone = r.Form.Get("phone")
-	reservation.Email = r.Form.Get("email")
-	reservation.StartDate = startDate
-	reservation.EndDate = endDate
-	reservation.RoomID = roomID*/
 
 	reservation := models.Reservation{
 		FirstName: r.Form.Get("first_name"),
@@ -304,7 +290,7 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 
 	if !ok {
 		m.App.ErrorLog.Println("cant get error from session")
-		log.Println("cannot get item from session")
+		//log.Println("cannot get item from session")
 		m.App.Session.Put(r.Context(), "error", "cannot get reservation from session")
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 	}
@@ -727,6 +713,9 @@ func (m *Repository) AdminPostShowReservation(w http.ResponseWriter, r *http.Req
 
 	m.App.Session.Put(r.Context(), "flash", "changes saved")
 
+	// Если изменение было произведенно со страницы бронирований то после отправки формы будем перенаправленны на страницу бронирования
+	// Если изменения были прозведенны со страницы календаря то мы будем после отправки формы также редирекнуты на календарь (т.к при календаре отправляется)
+	// два скрытых поля y, m
 	if year == "" {
 		http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
 	} else {
@@ -799,6 +788,8 @@ func (m *Repository) AdminReservationsCalendar(w http.ResponseWriter, r *http.Re
 
 	for _, x := range rooms {
 
+		//
+		//
 		reservationMap := make(map[string]int)
 		blockMap := make(map[string]int)
 
@@ -807,6 +798,7 @@ func (m *Repository) AdminReservationsCalendar(w http.ResponseWriter, r *http.Re
 			blockMap[d.Format("2006-01-02")] = 0
 		}
 
+		// Возвращаем массив всех ограничений по данной комнате с первого по последний день текущего месяца
 		restrictions, err := m.DB.GetRestrictionsForRoomByDate(x.ID, firstOfMonth, lastOfMonth)
 
 		if err != nil {
@@ -815,22 +807,27 @@ func (m *Repository) AdminReservationsCalendar(w http.ResponseWriter, r *http.Re
 		}
 
 		for _, y := range restrictions {
+			// Если у даты есть резервейшонID то есть на данные даты комната кем-то заброненна добавляем его в reservationMap.
 			if y.ReservationID > 0 {
-				//reservationMap[y.StartDate.Format("2006-01-02")] = y.ReservationID
+				// на каждую бронь например с 15-19 бронь к каждым суткам добавляется reservationID одна из записей мапы ниже
+				// reservationMap[y.StartDate.Format("2006-01-02")] = y.ReservationID
 				for d := y.StartDate; d.After(y.EndDate) == false; d = d.AddDate(0, 0, 1) {
 					reservationMap[d.Format("2006-01-02")] = y.ReservationID
 				}
 			} else {
+				// Если у даты есть блокировка но reservationID 0 значит на данные числа номер закрыт админом, добавляем его в blockMap
 				blockMap[y.StartDate.Format("2006-01-02")] = y.ID
 			}
 		}
 
+		//
 		for key, value := range reservationMap {
 			if value != 0 {
 				fmt.Println(key, value)
 			}
 		}
 
+		// Добавляем эти две мапы с текущим айди комнаты в нашу мапу data
 		data[fmt.Sprintf("reservation_map_%d", x.ID)] = reservationMap
 		data[fmt.Sprintf("block_map_%d", x.ID)] = blockMap
 
@@ -877,6 +874,7 @@ func (m *Repository) AdminPostReservationsCalendar(w http.ResponseWriter, r *htt
 		// Достаем мапу формата ['2025-03-03' : room_restriction_id] из сессии и преобразуем в нужный для нас формат
 		curMap := m.App.Session.Get(r.Context(), fmt.Sprintf("block_map_%d", x.ID)).(map[string]int)
 
+		// name - дата , value - restrictionID
 		for name, value := range curMap {
 			if val, ok := curMap[name]; ok {
 				// следим только за теми элементами где val > 0, и их нету в форме которая к нам пришла

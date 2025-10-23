@@ -119,6 +119,7 @@ func TestRepository_Reservation(t *testing.T) {
 	// На самом деле, session.Put работает так:
 	// Кладет данные в сессию по id который будет указан в ctx ()
 	// context реквеста при этом не изменяется потому что уже хранит в себе определенным id сессии
+	// session.Put(ctx, ...) не создаёт новый контекст — она меняет данные по ссылке, хранящейся внутри ctx.
 	session.Put(ctx, "reservation", reservation)
 
 	// адаптирует метод Reservation под интерфейс http.Handler.
@@ -212,6 +213,11 @@ func TestRepository_PostReservation(t *testing.T) {
 	reqBody := "start_date=2050-01-01"
 	reqBody = fmt.Sprintf("%s&%s&%s&%s&%s&%s&%s",
 		reqBody, "end_date=2050-01-01", "first_name=John", "last_name=Doe", "email=jd@jd.com", "phone=123456789", "room_id=1")
+
+	//postData := url.Values{}
+	//postData.Add("start_date", reqBody)
+
+	//req, _ := http.NewRequest("POST", "/make-reservation", strings.NewReader(postData))
 
 	req, _ := http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
 

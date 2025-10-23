@@ -25,7 +25,7 @@
                         {{with .Form.Errors.Get "first_name"}}
                             <lable class="text-danger">{{.}}</lable>
                         {{end}}
-                        {{/* Если при попытке получить ошибку по ключу (полю) first_name мы получаем ошибку то добавляем класс is_invalid */}}
+                        {{/* Если при попытке получить ошибку по ключу (полю) first_name мы получаем ошибку то добавляем класс is_invalid который обведет поле красным */}}
                         <input class="form-control {{with .Form.Errors.Get "first_name"}} is-invalid {{ end }}"
                                id="first_name" autocomplete="off" type='text'
                                {{/* с помощью значения указанного в value при первой неудачной отправке формы, данные в полях уже будут сохраненны */}}

@@ -27,9 +27,9 @@ func ConnectSQL(dsn string) (*DB, error) {
 		panic(err)
 	}
 
-	d.SetMaxOpenConns(maxOpenDbConn)
-	d.SetMaxIdleConns(maxIdleDbConn)
-	d.SetConnMaxLifetime(maxDbLifetime)
+	d.SetMaxOpenConns(maxOpenDbConn)    // сколько максимум одновременных соединений с БД может держать пул.
+	d.SetMaxIdleConns(maxIdleDbConn)    // сколько "простаивающих" соединений можно держать, чтобы не открывать новые каждый раз. (Например 10 человек зашло к нам , 5 соединений будет закрыто и еще 5 может находится в режиме ожидания не пересоздаваясь)
+	d.SetConnMaxLifetime(maxDbLifetime) // максимальное время жизни соединения (например, чтобы драйвер их время от времени пересоздавал и чистил висяки).
 
 	// пробрасываем наше соединение в свойство SQL типа DB
 	dbConn.SQL = d
@@ -52,11 +52,15 @@ func testDB(d *sql.DB) error {
 }
 
 func NewDataBase(dsn string) (*sql.DB, error) {
+
+	//Создаётся пул соединений к базе данных (через драйвер pgx) с использованием DSN (строка подключения).
+	//⚠ sql.Open не открывает сразу соединение — оно лишь подготавливает пул.
 	db, err := sql.Open("pgx", dsn)
 	if err != nil {
 		return nil, err
 	}
 
+	// Тут уже реально выполняется подключение к базе (через PING). Если неудачно (неверный DSN, база недоступна и т.д.) → ошибка.
 	if err = db.Ping(); err != nil {
 		return nil, err
 	}

@@ -58,7 +58,7 @@ func main() {
 }
 
 func run() (*driver.DB, error) {
-	// Что я собираюсь добавлять в сессии
+	// Что я собираюсь добавлять в сессии, регистрация дополнительных типов данных
 	gob.Register(models.Reservation{})
 	gob.Register(models.User{})
 	gob.Register(models.Room{})
@@ -71,6 +71,8 @@ func run() (*driver.DB, error) {
 	// изменяем данное свойство когда выходим в продакшн
 	app.InProduction = false
 
+	// Stdout означает что логи будут выводиться в консоли
+	// log.Ldate | log.Ltime означает: в лог будут добавлены дата (2009/01/23) и время (01:23:23).
 	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	app.InfoLog = infoLog
 

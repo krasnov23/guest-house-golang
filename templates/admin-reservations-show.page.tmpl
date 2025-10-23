@@ -65,7 +65,7 @@
             <hr>
             <div class="float-start">
                 <input type="submit" class="btn btn-primary" value="Save">
-                {{/* Если содержимое равно $src (eq - equal) строчке cal */}}
+                {{/* Если содержимое равно $src (eq - equal) строчке cal (Перешли на страницу резервации со страницы календаря в админке) */}}
                 {{if eq $src "cal"}}
                     {{/* onclick отправит на одну страницу до */}}
                     <a href="#!" onclick="window.history.go(-1)" class="btn btn-warning">Cancel</a>

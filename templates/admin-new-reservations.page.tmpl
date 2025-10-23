@@ -44,11 +44,13 @@
 {{define "js"}}
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function (){
+        document.addEventListener("DOMContentLoaded", function () {
             const dataTable = new simpleDatatables.DataTable("#new-res", {
-                select: 3, sort: "desc"
-            })
-        })
-
+                columns: [
+                    // индексы начинаются с 0
+                    { select: 3, sort: "desc" } // сортировка по 4-му столбцу (Arrival)
+                ]
+            });
+        });
     </script>
 {{end}}

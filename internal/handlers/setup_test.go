@@ -72,9 +72,9 @@ func TestMain(m *testing.M) {
 	// Конфигурационный файл
 	app.TemplateCache = tc
 
-	// в данном случае задаем параметр true т.к в любом из функций роутинга будет дергаться (например внутри Repo.Home) функция RenderTemplate
-	// в которой если UseCache = false он будет искать функцию в render.go , а там указан путь var pathToTemplates = "./templates"
-	// ( нам нужен тот что в этой переменной у нас pathToTemplates )
+	// в данном случае задаем параметр true т.к наша переменная (pathToTemplates) указывающая пути к шаблонам в обычной функции CreateTemplateCache читается с
+	// корневой директории в нашем же случае путь до шаблонов будет указывать с текущей директории где  написан данный тест
+	// true нужен для функции render.Template()
 	app.UseCache = true
 
 	listenForMail()
