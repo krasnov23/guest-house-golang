@@ -214,6 +214,13 @@ func (m *postgresDBRepo) Authenticate(email, testPassword string) (int, string, 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
 
+	/*hashed, err := bcrypt.GenerateFromPassword([]byte(testPassword), bcrypt.DefaultCost)
+	if err != nil {
+		log.Println("Ошибка при хэшировании:", err)
+	} else {
+		fmt.Println("Хэш пароля:", string(hashed))
+	}*/
+
 	var id int
 	var hashedPassword string
 
