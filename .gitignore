@@ -2,3 +2,4 @@
 database.yml
 **/coverage.out
 **/coverage.html
+migrations/schema.sql

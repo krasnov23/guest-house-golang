@@ -33,6 +33,13 @@ var theTests = []struct {
 	{"ms", "/majors-suite", "GET", []postData{}, http.StatusOK},
 	{"sa", "/search-availability", "GET", []postData{}, http.StatusOK},
 	{"contact", "/contact", "GET", []postData{}, http.StatusOK},
+	{"login", "/user/login", "GET", []postData{}, http.StatusOK},
+	{"logout", "/user/logout", "GET", []postData{}, http.StatusOK},
+	{"dashboard", "/admin/dashboard", "GET", []postData{}, http.StatusOK},
+	{"new res", "/admin/reservations-new", "GET", []postData{}, http.StatusOK},
+	{"new res", "/admin/reservations-all", "GET", []postData{}, http.StatusOK},
+	{"show res", "/admin/reservations/new/1/show", "GET", []postData{}, http.StatusOK},
+
 	//{"post-sa", "/search-availability", "POST", []postData{
 	//	{key: "start", value: "2020-01-01"},
 	//	{key: "end", value: "2020-01-02"},
@@ -617,6 +624,88 @@ func TestRepository_ChooseRoom_Success(t *testing.T) {
 
 	if updatedRes.RoomID != 1 {
 		t.Errorf("Expected room ID 1, got %d", updatedRes.RoomID)
+	}
+}
+
+var loginTests = []struct {
+	name               string
+	email              string
+	expectedStatusCode int
+	expectedHTML       string
+	expectedLocation   string
+}{
+	{"valid-credentials",
+		"me@here.ca",
+		http.StatusSeeOther,
+		"",
+		"/",
+	},
+	{
+		"invalid-credentials",
+		"jack@nimble.com",
+		http.StatusSeeOther,
+		"",
+		"/user/login",
+	},
+	{
+		"invalid-data",
+		"j",
+		http.StatusOK,
+		`action="/user/login"`,
+		"",
+	},
+}
+
+func TestLogin(t *testing.T) {
+	for _, e := range loginTests {
+		postedData := url.Values{}
+		postedData.Add("email", e.email)
+		postedData.Add("password", "password")
+
+		// Метод .Encode() преобразует эту структуру в строку, закодированную по стандарту application/x-www-form-urlencoded
+		// strings.NewReader — это функция из пакета strings.
+		// Она принимает строку и возвращает объект типа *strings.Reader, который реализует интерфейс io.Reader.
+		req, _ := http.NewRequest("POST", "/user/login", strings.NewReader(postedData.Encode()))
+
+		ctx, err := session.Load(req.Context(), req.Header.Get("X-Session"))
+
+		if err != nil {
+			log.Println(err)
+		}
+
+		req = req.WithContext(ctx)
+
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+		rr := httptest.NewRecorder()
+
+		handler := http.HandlerFunc(Repo.PostShowLogin)
+
+		handler.ServeHTTP(rr, req)
+
+		if rr.Code != e.expectedStatusCode {
+			t.Errorf("Expected status %d, got %d", e.expectedStatusCode, rr.Code)
+		}
+
+		if e.expectedLocation != "" {
+			actualLocation, _ := rr.Result().Location()
+
+			if actualLocation.String() != e.expectedLocation {
+				t.Errorf("failed %s: Expected location %s, got %s", e.name, e.expectedLocation, actualLocation.String())
+			}
+		}
+
+		if e.expectedHTML != "" {
+
+			// Прочитаем тело ответа
+			html := rr.Body.String()
+			// Это подстрока, которую тест ищет в HTML, чтобы убедиться, что сервер вернул страницу с формой логина.
+			// в e.expectedHTML можем прокинуть любую инфу которая содержится в html странице в нашем случае (login.page.tmpl)
+			if !strings.Contains(html, e.expectedHTML) {
+				t.Errorf("failed %s: Expected HTML %s, got %s", e.name, e.expectedHTML, html)
+			}
+		}
+
 	}
 }
 

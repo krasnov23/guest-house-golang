@@ -183,6 +183,14 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	room, err := m.DB.GetRoomByID(roomID)
+
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "cannot find Room")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
 	reservation := models.Reservation{
 		FirstName: r.Form.Get("first_name"),
 		LastName:  r.Form.Get("last_name"),
@@ -191,7 +199,12 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		RoomID:    roomID,
 		StartDate: startDate,
 		EndDate:   endDate,
+		Room:      room,
 	}
+
+	stringMap := make(map[string]string)
+	stringMap["start_date"] = sd
+	stringMap["end_date"] = ed
 
 	form := forms.New(r.PostForm)
 
@@ -204,11 +217,14 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		data := make(map[string]interface{})
 		data["reservation"] = reservation
 
-		http.Error(w, "my own error message", http.StatusSeeOther)
+		fmt.Println(data)
+		//http.Error(w, "my own error message", http.StatusSeeOther)
+		m.App.Session.Put(r.Context(), "error", "invalid data of fields")
 
 		render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
-			Form: form,
-			Data: data,
+			Form:      form,
+			Data:      data,
+			StringMap: stringMap,
 		})
 		return
 	}
@@ -556,6 +572,7 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 
 	form := forms.New(r.PostForm)
 	form.Required("email", "password")
+	form.IsEmail("email")
 
 	if !form.Valid() {
 		render.Template(w, r, "login.page.tmpl", &models.TemplateData{
@@ -569,7 +586,7 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 		m.App.Session.Put(r.Context(), "error", "invalid login credentials")
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 		return
 	}
 
